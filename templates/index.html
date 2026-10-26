@@ -1,0 +1,1049 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bank API | Documentation</title>
+
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --surface: #ffffff;
+            --text: #182230;
+            --muted: #667085;
+            --border: #e4e7ec;
+            --primary: #155eef;
+            --dark: #101828;
+            --green: #067647;
+            --red: #b42318;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        button, input, select {
+            font: inherit;
+        }
+
+        .topbar {
+            background: var(--dark);
+            color: white;
+            padding: 20px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 750;
+        }
+
+        .brand span {
+            color: #84adff;
+        }
+
+        .topbar a {
+            color: #d0d5dd;
+            margin-left: 20px;
+            font-size: 14px;
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #101828, #233d68);
+            color: white;
+            padding: 52px 5%;
+        }
+
+        .hero-inner {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .eyebrow {
+            color: #b2ccff;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.6px;
+        }
+
+        .hero h1 {
+            font-size: clamp(30px, 5vw, 46px);
+            line-height: 1.15;
+            margin: 12px 0;
+        }
+
+        .hero p {
+            color: #d0d5dd;
+            max-width: 680px;
+        }
+
+        .base-url {
+            margin-top: 24px;
+            padding: 13px 16px;
+            border: 1px solid #475467;
+            border-radius: 9px;
+            background: #101828;
+            display: inline-flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            overflow-wrap: anywhere;
+        }
+
+        .base-url code {
+            color: #86efac;
+        }
+
+        .layout {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 220px minmax(0, 1fr);
+            gap: 28px;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 20px;
+            align-self: start;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .sidebar h3 {
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 12px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #344054;
+            font-size: 14px;
+            padding: 9px 10px;
+            border-radius: 6px;
+            margin: 2px 0;
+        }
+
+        .sidebar a:hover {
+            background: #eff4ff;
+            color: var(--primary);
+        }
+
+        main {
+            min-width: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card, .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 750;
+            margin-top: 5px;
+        }
+
+        .card {
+            margin-bottom: 24px;
+            scroll-margin-top: 20px;
+        }
+
+        .card h2 {
+            font-size: 21px;
+            margin: 0 0 6px;
+        }
+
+        .description {
+            color: var(--muted);
+            margin: 0 0 20px;
+            font-size: 14px;
+        }
+
+        .endpoint {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin: 12px 0;
+        }
+
+        .method {
+            background: #dcfae6;
+            color: #05603a;
+            border-radius: 5px;
+            padding: 4px 9px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .endpoint code, code {
+            font-family: Consolas, "Courier New", monospace;
+            overflow-wrap: anywhere;
+        }
+
+        .endpoint code {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .endpoint small {
+            color: var(--muted);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 720px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 13px 11px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th {
+            background: #f9fafb;
+            color: #475467;
+            font-weight: 700;
+        }
+
+        td code {
+            color: #344054;
+            font-size: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .optional {
+            background: #ecfdf3;
+            color: var(--green);
+        }
+
+        .required {
+            background: #fef3f2;
+            color: var(--red);
+        }
+
+        .note {
+            background: #eff8ff;
+            border: 1px solid #b2ddff;
+            padding: 13px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #1849a9;
+            margin-top: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .field input, .field select {
+            width: 100%;
+            padding: 11px 12px;
+            background: white;
+            color: var(--text);
+            border: 1px solid #d0d5dd;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        .field input:focus, .field select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px #dbeafe;
+        }
+
+        .field small {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 7px;
+            padding: 11px 17px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #004eeb;
+        }
+
+        .btn-secondary {
+            background: #f2f4f7;
+            color: #344054;
+            border: 1px solid var(--border);
+        }
+
+        .request-url {
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            padding: 12px;
+            margin-top: 18px;
+            border-radius: 8px;
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .response-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        .response-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .status {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--green);
+        }
+
+        pre {
+            background: #101828;
+            color: #e4e7ec;
+            padding: 18px;
+            border-radius: 9px;
+            overflow: auto;
+            max-height: 540px;
+            font: 12px/1.7 Consolas, monospace;
+            white-space: pre;
+        }
+
+        .example {
+            margin-top: 20px;
+        }
+
+        .example h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .example pre {
+            max-height: none;
+            padding: 13px;
+        }
+
+        .inline-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            background: white;
+            color: var(--muted);
+            text-align: center;
+            padding: 26px 16px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 950px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .sidebar nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 17px 20px;
+            }
+
+            .topbar nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .topbar a {
+                margin: 0;
+            }
+
+            .hero {
+                padding: 34px 20px;
+            }
+
+            .layout {
+                padding: 0 14px;
+                margin-top: 18px;
+            }
+
+            .card, .stat-card {
+                padding: 17px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand">Bank<span>API</span></div>
+    <nav>
+        <a href="#endpoints">Endpoints</a>
+        <a href="#parameters">Parameters</a>
+        <a href="#playground">API Playground</a>
+        <a href="#examples">Examples</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-inner">
+        <div class="eyebrow">Developer Documentation · v1.0</div>
+        <h1>Bank Customer API</h1>
+        <p>
+            Explore fictional customer records, filter financial data,
+            sort results and inspect bank statistics through a simple
+            REST API built with Python and Flask.
+        </p>
+        <div class="base-url">
+            <span>BASE URL</span>
+            <code id="baseUrl"></code>
+        </div>
+    </div>
+</section>
+
+<div class="layout">
+
+    <aside class="sidebar">
+        <h3>Documentation</h3>
+        <nav>
+            <a href="#overview">Overview</a>
+            <a href="#endpoints">Endpoints</a>
+            <a href="#parameters">Query Parameters</a>
+            <a href="#playground">API Playground</a>
+            <a href="#responses">Response Format</a>
+            <a href="#examples">Request Examples</a>
+            <a href="#errors">Errors & Status Codes</a>
+        </nav>
+    </aside>
+
+    <main>
+
+        <section class="stats-grid" id="overview">
+            <div class="stat-card">
+                <div class="stat-label">HTTP Method</div>
+                <div class="stat-value">GET</div>
+                <div class="stat-label">Read-only endpoints</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Data Format</div>
+                <div class="stat-value">JSON</div>
+                <div class="stat-label">Structured responses</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Query Parameters</div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Optional filters and sorting</div>
+            </div>
+        </section>
+
+        <section class="card" id="endpoints">
+            <h2>Available Endpoints</h2>
+            <p class="description">
+                All endpoints are available locally when the Flask server
+                is running. No query parameters are mandatory.
+            </p>
+
+            <div class="endpoint">
+                <span class="method">GET</span>
+                <code>/</code>
+                <small>Interactive API documentation homepage</small>
+            </div>
+
+            <div class="endpoint">
+                <span class="method">GET</span>
+                <code>/customers</code>
+                <small>Retrieve, filter and sort customer records</small>
+            </div>
+
+            <div class="endpoint">
+                <span class="method">GET</span>
+                <code>/stats</code>
+                <small>Retrieve aggregate bank statistics</small>
+            </div>
+
+            <a class="inline-link" href="/stats" target="_blank">
+                Open statistics endpoint ↗
+            </a>
+        </section>
+
+        <section class="card" id="parameters">
+            <h2>Query Parameters</h2>
+            <p class="description">
+                Use these parameters with GET /customers.
+                All filters can be combined in the same request.
+            </p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Requirement</th>
+                            <th>Accepted values / Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>city</code></td>
+                            <td>String</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Exact city match, e.g. Jaipur. Case-insensitive.</td>
+                        </tr>
+                        <tr>
+                            <td><code>account_type</code></td>
+                            <td>String</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Savings, Current or Salary. Case-insensitive.</td>
+                        </tr>
+                        <tr>
+                            <td><code>credit_score_lt</code></td>
+                            <td>Integer</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Credit score strictly less than this value.</td>
+                        </tr>
+                        <tr>
+                            <td><code>credit_score_gt</code></td>
+                            <td>Integer</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Credit score strictly greater than this value.</td>
+                        </tr>
+                        <tr>
+                            <td><code>min_balance</code></td>
+                            <td>Number</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Balance greater than or equal to this amount.</td>
+                        </tr>
+                        <tr>
+                            <td><code>max_balance</code></td>
+                            <td>Number</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Balance less than or equal to this amount.</td>
+                        </tr>
+                        <tr>
+                            <td><code>min_age</code></td>
+                            <td>Integer</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Minimum age, inclusive.</td>
+                        </tr>
+                        <tr>
+                            <td><code>max_age</code></td>
+                            <td>Integer</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>Maximum age, inclusive.</td>
+                        </tr>
+                        <tr>
+                            <td><code>active</code></td>
+                            <td>Boolean</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>true or false. Filters account status.</td>
+                        </tr>
+                        <tr>
+                            <td><code>kyc_verified</code></td>
+                            <td>Boolean</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>true or false. Filters KYC status.</td>
+                        </tr>
+                        <tr>
+                            <td><code>sort_by</code></td>
+                            <td>String</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>name, age, balance, credit_score, monthly_income, loan_amount, transactions_count.</td>
+                        </tr>
+                        <tr>
+                            <td><code>order</code></td>
+                            <td>String</td>
+                            <td><span class="badge optional">Optional</span></td>
+                            <td>asc or desc. Default: asc. Used for sorting.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="note">
+                <strong>Required parameters:</strong> None.
+                If no filters are supplied, all customers are returned.
+                When filters are combined, a customer must satisfy every
+                supplied filter. Invalid numeric, Boolean, sorting or order
+                values return HTTP 400.
+            </div>
+        </section>
+
+        <section class="card" id="playground">
+            <h2>API Playground</h2>
+            <p class="description">
+                Select any combination of supported parameters and send
+                a real request to the running Flask API.
+            </p>
+
+            <form id="apiForm">
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label for="city">City</label>
+                        <select id="city">
+                            <option value="">All cities</option>
+                            <option value="Jaipur">Jaipur</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Ahmedabad">Ahmedabad</option>
+                            <option value="Mumbai">Mumbai</option>
+                        </select>
+                        <small>Optional · Exact city match</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="account_type">Account Type</label>
+                        <select id="account_type">
+                            <option value="">All account types</option>
+                            <option value="Savings">Savings</option>
+                            <option value="Current">Current</option>
+                            <option value="Salary">Salary</option>
+                        </select>
+                        <small>Optional · Account category</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="credit_score_lt">Credit Score Below</label>
+                        <input id="credit_score_lt" type="number"
+                               step="1" placeholder="e.g. 400">
+                        <small>Optional · Strictly less than</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="credit_score_gt">Credit Score Above</label>
+                        <input id="credit_score_gt" type="number"
+                               step="1" placeholder="e.g. 700">
+                        <small>Optional · Strictly greater than</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="min_balance">Minimum Balance</label>
+                        <input id="min_balance" type="number"
+                               min="0" step="any" placeholder="e.g. 50000">
+                        <small>Optional · Inclusive minimum</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="max_balance">Maximum Balance</label>
+                        <input id="max_balance" type="number"
+                               min="0" step="any" placeholder="e.g. 100000">
+                        <small>Optional · Inclusive maximum</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="min_age">Minimum Age</label>
+                        <input id="min_age" type="number"
+                               min="0" step="1" placeholder="e.g. 25">
+                        <small>Optional · Inclusive minimum</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="max_age">Maximum Age</label>
+                        <input id="max_age" type="number"
+                               min="0" step="1" placeholder="e.g. 40">
+                        <small>Optional · Inclusive maximum</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="active">Account Status</label>
+                        <select id="active">
+                            <option value="">All statuses</option>
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                        <small>Optional · Boolean</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="kyc_verified">KYC Status</label>
+                        <select id="kyc_verified">
+                            <option value="">All KYC statuses</option>
+                            <option value="true">Verified</option>
+                            <option value="false">Not verified</option>
+                        </select>
+                        <small>Optional · Boolean</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="sort_by">Sort Results By</label>
+                        <select id="sort_by">
+                            <option value="">Default order</option>
+                            <option value="name">Name</option>
+                            <option value="age">Age</option>
+                            <option value="balance">Balance</option>
+                            <option value="credit_score">Credit Score</option>
+                            <option value="monthly_income">Monthly Income</option>
+                            <option value="loan_amount">Loan Amount</option>
+                            <option value="transactions_count">Transactions Count</option>
+                        </select>
+                        <small>Optional · Allowed sort fields only</small>
+                    </div>
+
+                    <div class="field">
+                        <label for="order">Sort Order</label>
+                        <select id="order">
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                        <small>Optional · Defaults to ascending</small>
+                    </div>
+
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" type="submit">
+                        Send API Request →
+                    </button>
+                    <button class="btn btn-secondary" type="button"
+                            id="lowScore">
+                        Credit Score Below 400
+                    </button>
+                    <button class="btn btn-secondary" type="button"
+                            id="reset">
+                        Reset
+                    </button>
+                </div>
+            </form>
+
+            <div class="request-url">
+                <strong>Request URL</strong>
+                <div id="requestUrl">Select filters to build your request.</div>
+            </div>
+
+            <div class="response-header">
+                <h3>JSON Response</h3>
+                <span class="status" id="status">Waiting for request</span>
+            </div>
+
+            <pre id="response">Submit a request to view the API response here.</pre>
+        </section>
+
+        <section class="card" id="responses">
+            <h2>Response Format</h2>
+            <p class="description">
+                Successful customer requests return a JSON object.
+            </p>
+            <pre>{
+  "count": 2,
+  "filters_applied": {
+    "credit_score_lt": "400"
+  },
+  "customers": [
+    {
+      "customer_id": 102,
+      "name": "Priya Verma",
+      "credit_score": 350,
+      "city": "Delhi"
+    }
+  ]
+}</pre>
+            <p class="description">
+                The example is abbreviated. The actual endpoint returns
+                all fields for every matching customer.
+            </p>
+
+            <h3>Statistics endpoint</h3>
+            <p>
+                <code>GET /stats</code> returns customer counts, account
+                status totals, average credit score, total sample balance
+                and the number of customers with a score below 400.
+            </p>
+        </section>
+
+        <section class="card" id="examples">
+            <h2>Example Requests</h2>
+
+            <div class="example">
+                <h3>1. Customers with credit score below 400</h3>
+                <pre>GET /customers?credit_score_lt=400</pre>
+            </div>
+
+            <div class="example">
+                <h3>2. Active Jaipur customers with credit score below 400</h3>
+                <pre>GET /customers?city=Jaipur&amp;credit_score_lt=400&amp;active=true</pre>
+            </div>
+
+            <div class="example">
+                <h3>3. Customers aged 25–40, sorted by income</h3>
+                <pre>GET /customers?min_age=25&amp;max_age=40&amp;sort_by=monthly_income&amp;order=desc</pre>
+            </div>
+
+            <div class="example">
+                <h3>4. High-balance savings accounts</h3>
+                <pre>GET /customers?account_type=Savings&amp;min_balance=50000</pre>
+            </div>
+
+            <div class="example">
+                <h3>5. All bank statistics</h3>
+                <pre>GET /stats</pre>
+            </div>
+
+            <div class="note">
+                The sample customer dataset is fictional. These examples
+                demonstrate query filtering and do not represent real
+                banking or credit-bureau data.
+            </div>
+        </section>
+
+        <section class="card" id="errors">
+            <h2>Errors & Status Codes</h2>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Meaning</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>200</td>
+                            <td>Request successful</td>
+                            <td>Matching customers returned, even if count is zero.</td>
+                        </tr>
+                        <tr>
+                            <td>400</td>
+                            <td>Invalid query parameter</td>
+                            <td>credit_score_lt=abc or order=sideways.</td>
+                        </tr>
+                        <tr>
+                            <td>404</td>
+                            <td>Endpoint not found</td>
+                            <td>Requesting an undefined route.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="description">
+                Error responses are returned as JSON where handled by
+                the endpoint. Flask handles undefined routes with HTTP 404.
+            </p>
+        </section>
+
+    </main>
+</div>
+
+<footer>
+    BankAPI Documentation · Built with Python & Flask · Educational use only
+</footer>
+
+<script>
+    const baseUrl = window.location.origin;
+
+    document.getElementById("baseUrl").textContent = baseUrl;
+
+    const form = document.getElementById("apiForm");
+    const responseBox = document.getElementById("response");
+    const statusBox = document.getElementById("status");
+    const requestUrlBox = document.getElementById("requestUrl");
+
+    const parameterIds = [
+        "city",
+        "account_type",
+        "credit_score_lt",
+        "credit_score_gt",
+        "min_balance",
+        "max_balance",
+        "min_age",
+        "max_age",
+        "active",
+        "kyc_verified",
+        "sort_by",
+        "order"
+    ];
+
+    function buildUrl() {
+        const params = new URLSearchParams();
+
+        for (const id of parameterIds) {
+            const element = document.getElementById(id);
+            const value = element.value.trim();
+
+            if (value !== "") {
+                // Only include sort order when a sort field is selected.
+                if (id === "order" &&
+                    !document.getElementById("sort_by").value) {
+                    continue;
+                }
+
+                params.set(id, value);
+            }
+        }
+
+        const query = params.toString();
+
+        return `${baseUrl}/customers${query ? "?" + query : ""}`;
+    }
+
+    async function sendRequest() {
+        const url = buildUrl();
+
+        requestUrlBox.textContent = url;
+        responseBox.textContent = "Loading...";
+        statusBox.textContent = "Request in progress...";
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            statusBox.textContent = `HTTP ${response.status}`;
+
+            responseBox.textContent = JSON.stringify(data, null, 2);
+        } catch (error) {
+            statusBox.textContent = "Request failed";
+            responseBox.textContent =
+                "Could not connect to the API. Make sure the Flask " +
+                "server is running.\n\n" + error.message;
+        }
+    }
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        sendRequest();
+    });
+
+    // Update the preview URL whenever a filter changes.
+    for (const id of parameterIds) {
+        document.getElementById(id).addEventListener("change", () => {
+            requestUrlBox.textContent = buildUrl();
+        });
+
+        document.getElementById(id).addEventListener("input", () => {
+            requestUrlBox.textContent = buildUrl();
+        });
+    }
+
+    document.getElementById("lowScore").addEventListener("click", () => {
+        form.reset();
+        document.getElementById("credit_score_lt").value = "400";
+        sendRequest();
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+        form.reset();
+        requestUrlBox.textContent =
+            `${baseUrl}/customers`;
+        responseBox.textContent =
+            "Filters reset. Submit the form to fetch all customers.";
+        statusBox.textContent = "Ready";
+    });
+
+    requestUrlBox.textContent = `${baseUrl}/customers`;
+</script>
+
+</body>
+</html>
